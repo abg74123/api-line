@@ -4,6 +4,7 @@ const app = new express()
 const router = express.Router()
 
 router.get('/webhook/line',(req,res)=>{
+   console.log("### START WEBHOOK LINE ###");
    console.log("webhook => ",req);
    res.json({
       message:'Webhook Event Success'
