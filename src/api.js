@@ -5,6 +5,9 @@ const router = express.Router()
 
 router.get('/webhook/line',(req,res)=>{
    console.log("webhook => ",req);
+   res.json({
+      message:'Webhook Event Success'
+   })
 })
 
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
