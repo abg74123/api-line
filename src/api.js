@@ -17,6 +17,7 @@ const client = new line.Client({
     channelAccessToken: ACCESS_TOKEN
 });
 
+router.options('*')
 
 router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
     try {
