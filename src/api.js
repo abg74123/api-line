@@ -29,21 +29,34 @@ router.post('/webhook',line.middleware(lineConfig),async (req,res)=>{
 })
 
 
-const richmenu = {
-   size: {
-      width: 2500,
-      height: 1686
-   },
-};
-
 const handleEvent = async (event) => {
    const profile = await client.getProfile(event.source.userId)
    console.log("getProfile =>> ", profile)
-   return client.createRichMenu(richmenu)
-   // return client.replyMessage(event.replyToken,{
-   //    type:'text',
-   //    text:`ไง ${profile.displayName}`
-   // })
+   return client.replyMessage(event.replyToken,{
+      "type": "template",
+       "altText": "this is a buttons template",
+       "template": {
+      "type": "buttons",
+          "thumbnailImageUrl": "https://img.salehere.co.th/p/1200x0/2021/12/28/x0tgsx1038bf.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#B6AB1E",
+          "title": "นกแก้ว",
+          "text": "พันธุ์ทาง",
+          "actions": [
+         {
+            "type": "message",
+            "label": "ซื้อเลย",
+            "text": "ซื้อเลย"
+         },
+         {
+            "type": "message",
+            "label": "ยังไม่สนใจ",
+            "text": "ยังไม่สนใจ"
+         }
+      ]
+   }
+   })
 }
 
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
