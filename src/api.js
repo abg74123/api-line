@@ -66,7 +66,7 @@ const handleEvent = async (event) => {
     ])
 }
 
-router.post('/boardcast/messages',async (req,res)=>{
+router.post('/broadcast/messages',async (req,res)=>{
     try{
         await client.broadcast(  {
             type: 'text',
