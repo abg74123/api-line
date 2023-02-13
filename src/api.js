@@ -29,7 +29,7 @@ router.post('/webhook',line.middleware(lineConfig),async (req,res)=>{
 })
 
 const handleEvent = async (event) => {
-   console.log(event)
+   console.log("getProfile =>> ", client.getProfile(event.source.userId))
    return client.replyMessage(event.replyToken,{
       type:'text',
       text:'Test'
