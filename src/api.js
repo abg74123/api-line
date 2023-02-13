@@ -72,11 +72,11 @@ router.post('/broadcast/messages',async (req,res)=>{
             type: 'text',
             text: `ไงเด็กๆ`
         })
-        res.status(200).json({
+        return res.status(200).json({
             message:"OK"
         })
     }catch (e) {
-        res.status(500).end()
+         res.status(500).end()
     }
 })
 
