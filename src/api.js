@@ -68,7 +68,8 @@ const handleEvent = async (event) => {
 
 router.post('/broadcast/messages',async (req,res)=>{
     try{
-        const body = req.body
+        const body = JSON.parse(req.body.toString());
+
         console.log({body})
        const test =  await client.broadcast(  {
             type: 'text',
