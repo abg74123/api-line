@@ -1,4 +1,5 @@
 const line = require('@line/bot-sdk')
+const cors = require('cors');
 const express = require('express')
 const serverless = require("serverless-http")
 const app = new express()
@@ -17,7 +18,7 @@ const client = new line.Client({
     channelAccessToken: ACCESS_TOKEN
 });
 
-router.options('*')
+router.options('*',cors())
 
 router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
     try {
