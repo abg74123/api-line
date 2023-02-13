@@ -7,13 +7,15 @@ const dotenv = require('dotenv')
 const env = dotenv.config().parsed
 
 const lineConfig = {
-   channelAccessToken: env.ACCESS_TOKEN,
-   channelSecret:env.SECRET_TOKEN
+   channelAccessToken: 'i1pQkBiSb1u7xOjTy43W29S3GDfYCSxy76mY38kMZY2KsuxgeUXDvhjQLlSMMXKPcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc61LVu0xU7V3r/q2O6uYFvBDwQv18SwaGVLPlSXCRuZn4AdB04t89/1O/w1cDnyilFU=',
+   channelSecret:'5df738274847d01d22354ee989df341b'
 }
 
+
 const client = new line.Client({
-   channelAccessToken: env.ACCESS_TOKEN
+   channelAccessToken: 'i1pQkBiSb1u7xOjTy43W29S3GDfYCSxy76mY38kMZY2KsuxgeUXDvhjQLlSMMXKPcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc61LVu0xU7V3r/q2O6uYFvBDwQv18SwaGVLPlSXCRuZn4AdB04t89/1O/w1cDnyilFU='
 });
+
 
 router.post('/webhook',line.middleware(lineConfig),async (req,res)=>{
    try{
