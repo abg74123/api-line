@@ -67,7 +67,7 @@ const handleEvent = async (event) => {
 }
 
 router.post('/broadcast/messages',async (req,res)=>{
-
+    try{
         const body = JSON.parse(req.body.toString());
 
         console.log({body})
@@ -75,11 +75,14 @@ router.post('/broadcast/messages',async (req,res)=>{
             type: 'text',
             text: body.message
         })
-
         res.status(200).json({
             message:"OK"
         })
-
+    }catch (e) {
+         res.status(500).json({
+            message:e
+        })
+    }
 })
 
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
