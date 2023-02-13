@@ -69,10 +69,12 @@ const handleEvent = async (event) => {
 router.post('/broadcast/messages',async (req,res)=>{
     try{
         const body = req.body
-        await client.broadcast(  {
+        console.log({body})
+       const test =  await client.broadcast(  {
             type: 'text',
             text: body.message
         })
+        console.log("test => ",test)
          res.status(200).json({
             message:"OK"
         })
