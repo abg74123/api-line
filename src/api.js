@@ -33,7 +33,7 @@ const handleEvent = async (event) => {
    console.log("getProfile =>> ", profile)
    return client.replyMessage(event.replyToken,{
       type:'text',
-      text:`ไง ${profile}`
+      text:`ไง ${profile.displayName}`
    })
 }
 
