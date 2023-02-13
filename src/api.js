@@ -64,6 +64,18 @@ const handleEvent = async (event) => {
     ])
 }
 
+router.post('/boardcast/messages',async (req,res)=>{
+    try{
+        await client.broadcast(  {
+            type: 'text',
+            text: `ไง ${profile.displayName}`
+        })
+        res.status(200).send("OK")
+    }catch (e) {
+        res.status(500).end()
+    }
+})
+
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
 app.use('/.netlify/functions/api', router)
 
