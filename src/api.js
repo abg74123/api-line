@@ -11,15 +11,27 @@ const lineConfig = {
    channelSecret:env.SECRET_TOKEN
 }
 
-router.post('/webhook',line.middleware(lineConfig),(req,res)=>{
-   console.log("### START WEBHOOK LINE ###");
-   console.log("webhook => ",req);
-   const events = req.body.events
-   console.log("event =>>>>",events)
-   // res.json({
-   //    message:'Webhook Event Success'
-   // })
+const client = new line.Client({
+   channelAccessToken: env.ACCESS_TOKEN
+});
+
+router.post('/webhook',line.middleware(lineConfig),async (req,res)=>{
+   try{
+      const events = req.body.events
+      console.log("event =>>>>",events)
+      return events.length > 0 ? await events.map(item => handleEvent(item)) :  res.status(200).send("OK")
+   }catch (err){
+      res.status(500).end()
+   }
 })
+
+const handleEvent = async (event) => {
+   console.log(event)
+   return client.replyMessage(event.replyToken,{
+      type:'text',
+      text:'Test'
+   })
+}
 
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
 app.use('/.netlify/functions/api',router)
