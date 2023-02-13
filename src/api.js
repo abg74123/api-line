@@ -68,7 +68,7 @@ router.post('/boardcast/messages',async (req,res)=>{
     try{
         await client.broadcast(  {
             type: 'text',
-            text: `ไง ${profile.displayName}`
+            text: `ไงเด็กๆ`
         })
         res.status(200).send("OK")
     }catch (e) {
