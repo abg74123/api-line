@@ -72,7 +72,9 @@ router.post('/boardcast/messages',async (req,res)=>{
             type: 'text',
             text: `ไงเด็กๆ`
         })
-        res.status(200).send("OK")
+        res.status(200).json({
+            message:"OK"
+        })
     }catch (e) {
         res.status(500).end()
     }
