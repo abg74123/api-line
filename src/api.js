@@ -28,13 +28,22 @@ router.post('/webhook',line.middleware(lineConfig),async (req,res)=>{
    }
 })
 
+
+const richmenu = {
+   size: {
+      width: 2500,
+      height: 1686
+   },
+};
+
 const handleEvent = async (event) => {
    const profile = await client.getProfile(event.source.userId)
    console.log("getProfile =>> ", profile)
-   return client.replyMessage(event.replyToken,{
-      type:'text',
-      text:`ไง ${profile.displayName}`
-   })
+   return client.createRichMenu(richmenu)
+   // return client.replyMessage(event.replyToken,{
+   //    type:'text',
+   //    text:`ไง ${profile.displayName}`
+   // })
 }
 
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
