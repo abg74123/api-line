@@ -68,15 +68,18 @@ const handleEvent = async (event) => {
 
 router.post('/broadcast/messages',async (req,res)=>{
     try{
+        const body = req.body
         await client.broadcast(  {
             type: 'text',
-            text: `ไงเด็กๆ`
+            text: body.message
         })
-        return res.status(200).json({
+         res.status(200).json({
             message:"OK"
         })
     }catch (e) {
-         res.status(500).end()
+        res.status(500).json({
+            message:e
+        })
     }
 })
 
