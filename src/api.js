@@ -8,10 +8,13 @@ const router = express.Router()
 const handleEvent = async (event) => {
 
     if(event.type === 'message'){
-
-        messages[event.source.userId].push({
-            event
-        })
+        if(!messages[event.source.userId]){
+            messages[event.source.userId] = []
+        }else{
+            messages[event.source.userId].push({
+                event
+            })
+        }
     }
     // const profile = await client.getProfile(event.source.userId)
     // console.log("getProfile =>> ", profile)
