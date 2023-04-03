@@ -106,7 +106,7 @@ router.get('/list/users', async (req, res) => {
             channelAccessToken: queryString['channelAccessToken']
         });
         for (const [key, value] of Object.entries(messages)){
-
+            console.log({key})
             console.log({client})
             const profile = await client.getProfile(key)
             console.log("getProfile =>> ", profile)
