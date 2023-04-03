@@ -94,7 +94,7 @@ router.get('/messages', async (req, res) => {
     const queryString = req.apiGateway?.event.queryStringParameters
     console.log({queryString})
 
-    if(queryString && queryString[channelAccessToken]){
+    if(queryString && queryString['channelAccessToken']){
 
 
     const client = new line.Client({
