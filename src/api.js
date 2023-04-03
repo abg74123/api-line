@@ -5,40 +5,6 @@ const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
 
-const ACCESS_TOKEN = "i1pQkBiSb1u7xOjTy43W29S3GDfYCSxy76mY38kMZY2KsuxgeUXDvhjQLlSMMXKPcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc61LVu0xU7V3r/q2O6uYFvBDwQv18SwaGVLPlSXCRuZn4AdB04t89/1O/w1cDnyilFU="
-const SECRET_TOKEN = "5df738274847d01d22354ee989df341b"
-
-const messages = []
-
-const lineConfig = {
-    channelAccessToken: ACCESS_TOKEN,
-    channelSecret: SECRET_TOKEN
-}
-
-
-const client = new line.Client({
-    channelAccessToken: ACCESS_TOKEN
-});
-
-router.options('*',cors())
-
-router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
-    try {
-        const events = req.body.events
-        console.log("event =>>>>", events)
-        return events.length > 0 ? await events.map(item => handleEvent(item)) : res.status(200).send("OK")
-    } catch (err) {
-        res.status(500).end()
-    }
-})
-
-router.get('/messages', async (req, res) => {
-    res.status(200).json({
-        data:messages
-    })
-})
-
-
 const handleEvent = async (event) => {
 
     if(event.type === 'message'){
@@ -78,9 +44,46 @@ const handleEvent = async (event) => {
     // ])
 }
 
+// const ACCESS_TOKEN = "i1pQkBiSb1u7xOjTy43W29S3GDfYCSxy76mY38kMZY2KsuxgeUXDvhjQLlSMMXKPcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc61LVu0xU7V3r/q2O6uYFvBDwQv18SwaGVLPlSXCRuZn4AdB04t89/1O/w1cDnyilFU="
+// const SECRET_TOKEN = "5df738274847d01d22354ee989df341b"
+
+const messages = []
+
+// const lineConfig = {
+//     channelAccessToken: ACCESS_TOKEN,
+//     channelSecret: SECRET_TOKEN
+// }
+
+
+// const client = new line.Client({
+//     channelAccessToken: ACCESS_TOKEN
+// });
+
+router.options('*',cors())
+
+router.post('/webhook', async (req, res) => {
+    try {
+        const events = req.body.events
+        console.log("event =>>>>", events)
+        return events.length > 0 ? await events.map(item => handleEvent(item)) : res.status(200).send("OK")
+    } catch (err) {
+        res.status(500).end()
+    }
+})
+
+router.get('/messages', async (req, res) => {
+    res.status(200).json({
+        data:messages
+    })
+})
+
 router.post('/broadcast/messages',async (req,res)=>{
     try{
         const body = JSON.parse(req.body.toString());
+
+        const client = new line.Client({
+            channelAccessToken: body.channelAccessToken
+        });
 
         console.log({body})
       await client.broadcast(  {
