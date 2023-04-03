@@ -8,6 +8,7 @@ const router = express.Router()
 const handleEvent = async (event) => {
 
     if(event.type === 'message'){
+
         messages.push(event)
     }
     // const profile = await client.getProfile(event.source.userId)
@@ -89,6 +90,19 @@ router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
 })
 
 router.get('/messages', async (req, res) => {
+
+    const queryString = req.apiGateway?.event.queryStringParameters
+
+    const client = new line.Client({
+        channelAccessToken: queryString[channelAccessToken]
+    });
+
+    messages.map(async (message) => {
+        const profile = await client.getProfile(message.source.userId)
+        console.log("getProfile =>> ", profile)
+        message['profile'] = profile
+    })
+
     res.status(200).json({
         status: 200,
         data: messages,
