@@ -160,7 +160,8 @@ router.get('/messages/:userId', async (req, res) => {
 
 router.post('/broadcast/messages',async (req,res)=>{
     try{
-        const body = JSON.parse(req.body.toString());
+        const body = req.body;
+        console.log({body})
 
         const client = new line.Client({
             channelAccessToken: body.channelAccessToken
