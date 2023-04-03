@@ -69,14 +69,14 @@ const handleEvent = async (event) => {
     // ])
 }
 
-// const ACCESS_TOKEN = "i1pQkBiSb1u7xOjTy43W29S3GDfYCSxy76mY38kMZY2KsuxgeUXDvhjQLlSMMXKPcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc61LVu0xU7V3r/q2O6uYFvBDwQv18SwaGVLPlSXCRuZn4AdB04t89/1O/w1cDnyilFU="
-// const SECRET_TOKEN = "5df738274847d01d22354ee989df341b"
+const ACCESS_TOKEN = "v565wMs7RUOFeli0wfo0JP1c41EIOPL/Fux3V1GS7goKMmw/hlqyO5W+nxAyIBy/7fj3FOkxrGnHu2EDFRuojWRoa3Mpy/bQM1/NHx4Rb7KiJoVIKv7VxQZpxxK4R6jDGcrfcLU7MToXoCaxI5t9lgdB04t89/1O/w1cDnyilFU="
+const SECRET_TOKEN = "644edb2fc25ff6c9b5b728a2ef76cbd4"
 
 
-// const lineConfig = {
-//     channelAccessToken: ACCESS_TOKEN,
-//     channelSecret: SECRET_TOKEN
-// }
+const lineConfig = {
+    channelAccessToken: ACCESS_TOKEN,
+    channelSecret: SECRET_TOKEN
+}
 
 
 // const client = new line.Client({
@@ -85,7 +85,7 @@ const handleEvent = async (event) => {
 
 
 router.post('/webhook', async (req, res) => {
-    // line.middleware(lineConfig)
+    line.middleware(lineConfig)
     const events = req.body.events;
     console.log("event =>>>>", events)
 
@@ -104,7 +104,7 @@ router.get('/list/users', async (req, res) => {
         console.log('channelAccessToken => ',queryString['channelAccessToken'])
         for (const [key, value] of Object.entries(messages)){
             const client = new line.Client({
-                channelAccessToken: "v565wMs7RUOFeli0wfo0JP1c41EIOPL/Fux3V1GS7goKMmw/hlqyO5W+nxAyIBy/7fj3FOkxrGnHu2EDFRuojWRoa3Mpy/bQM1/NHx4Rb7KiJoVIKv7VxQZpxxK4R6jDGcrfcLU7MToXoCaxI5t9lgdB04t89/1O/w1cDnyilFU="
+                channelAccessToken: queryString['channelAccessToken']
             });
             console.log({client})
             const profile = await client.getProfile(key)
