@@ -1,9 +1,29 @@
 const line = require('@line/bot-sdk')
-const cors = require('cors');
 const express = require('express')
 const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+app.use(express.json())
+
+const messages = {}
 
 const handleEvent = async (event) => {
 
@@ -52,7 +72,6 @@ const handleEvent = async (event) => {
 // const ACCESS_TOKEN = "i1pQkBiSb1u7xOjTy43W29S3GDfYCSxy76mY38kMZY2KsuxgeUXDvhjQLlSMMXKPcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc61LVu0xU7V3r/q2O6uYFvBDwQv18SwaGVLPlSXCRuZn4AdB04t89/1O/w1cDnyilFU="
 // const SECRET_TOKEN = "5df738274847d01d22354ee989df341b"
 
-const messages = {}
 
 // const lineConfig = {
 //     channelAccessToken: ACCESS_TOKEN,
@@ -64,25 +83,7 @@ const messages = {}
 //     channelAccessToken: ACCESS_TOKEN
 // });
 
-app.use(function (req, res, next) {
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
-    next();
-});
-app.use(express.json())
 router.post('/webhook', async (req, res) => {
     // line.middleware(lineConfig)
     const events = req.body.events;
