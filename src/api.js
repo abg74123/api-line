@@ -81,9 +81,10 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-
+app.use(bodyParser.json())
 router.post('/webhook', async (req, res) => {
     line.middleware(lineConfig)
+
     const events = req.body.json()
     console.log("event =>>>>", events)
 
