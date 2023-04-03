@@ -1,6 +1,7 @@
 const line = require('@line/bot-sdk')
 const cors = require('cors');
 const express = require('express')
+const bodyParser = require('body-parser')
 const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
