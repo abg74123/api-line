@@ -8,6 +8,8 @@ const router = express.Router()
 const ACCESS_TOKEN = "i1pQkBiSb1u7xOjTy43W29S3GDfYCSxy76mY38kMZY2KsuxgeUXDvhjQLlSMMXKPcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc61LVu0xU7V3r/q2O6uYFvBDwQv18SwaGVLPlSXCRuZn4AdB04t89/1O/w1cDnyilFU="
 const SECRET_TOKEN = "5df738274847d01d22354ee989df341b"
 
+const messages = []
+
 const lineConfig = {
     channelAccessToken: ACCESS_TOKEN,
     channelSecret: SECRET_TOKEN
@@ -30,40 +32,50 @@ router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
     }
 })
 
+router.get('/messages', async (req, res) => {
+    res.status(200).json({
+        data:messages
+    })
+})
+
 
 const handleEvent = async (event) => {
-    const profile = await client.getProfile(event.source.userId)
-    console.log("getProfile =>> ", profile)
-    return client.replyMessage(event.replyToken, [{
-        "type": "template",
-        "altText": "this is a buttons template",
-        "template": {
-            "type": "buttons",
-            "thumbnailImageUrl": "https://img.salehere.co.th/p/1200x0/2021/12/28/x0tgsx1038bf.jpg",
-            "imageAspectRatio": "rectangle",
-            "imageSize": "cover",
-            "imageBackgroundColor": "#B6AB1E",
-            "title": "นกแก้ว",
-            "text": "พันธุ์ทาง",
-            "actions": [
-                {
-                    "type": "message",
-                    "label": "ซื้อเลย",
-                    "text": "ซื้อเลย"
-                },
-                {
-                    "type": "message",
-                    "label": "ยังไม่สนใจ",
-                    "text": "ยังไม่สนใจ"
-                }
-            ]
-        }
-    },
-        {
-            type: 'text',
-            text: `ไง ${profile.displayName}`
-        }
-    ])
+
+    if(event.type === 'message'){
+        messages.push(event)
+    }
+    // const profile = await client.getProfile(event.source.userId)
+    // console.log("getProfile =>> ", profile)
+    // return client.replyMessage(event.replyToken, [{
+    //     "type": "template",
+    //     "altText": "this is a buttons template",
+    //     "template": {
+    //         "type": "buttons",
+    //         "thumbnailImageUrl": "https://img.salehere.co.th/p/1200x0/2021/12/28/x0tgsx1038bf.jpg",
+    //         "imageAspectRatio": "rectangle",
+    //         "imageSize": "cover",
+    //         "imageBackgroundColor": "#B6AB1E",
+    //         "title": "นกแก้ว",
+    //         "text": "พันธุ์ทาง",
+    //         "actions": [
+    //             {
+    //                 "type": "message",
+    //                 "label": "ซื้อเลย",
+    //                 "text": "ซื้อเลย"
+    //             },
+    //             {
+    //                 "type": "message",
+    //                 "label": "ยังไม่สนใจ",
+    //                 "text": "ยังไม่สนใจ"
+    //             }
+    //         ]
+    //     }
+    // },
+    //     {
+    //         type: 'text',
+    //         text: `ไง ${profile.displayName}`
+    //     }
+    // ])
 }
 
 router.post('/broadcast/messages',async (req,res)=>{
