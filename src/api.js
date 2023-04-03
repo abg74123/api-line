@@ -113,7 +113,7 @@ router.get('/list/users', async (req, res) => {
                 console.log("getProfile =>> ", profile)
                 users.push(profile)
             }catch (e){
-                console.log("error  profile =>> ", e)
+                console.log("error  profile =>> ", JSON.stringify(e))
             }
 
         }
