@@ -108,9 +108,14 @@ router.get('/list/users', async (req, res) => {
         for (const [key, value] of Object.entries(messages)){
             console.log({key})
             console.log({client})
-            const profile = await client.getProfile(key)
-            console.log("getProfile =>> ", profile)
-            users.push(profile)
+            try{
+                const profile = await client.getProfile(key)
+                console.log("getProfile =>> ", profile)
+                users.push(profile)
+            }catch (e){
+                console.log("error  profile =>> ", e)
+            }
+
         }
 
         res.status(200).json({
