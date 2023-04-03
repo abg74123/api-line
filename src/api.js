@@ -11,9 +11,7 @@ const handleEvent = async (event) => {
         if(!messages[event.source.userId]){
             messages[event.source.userId] = [event]
         }else{
-            messages[event.source.userId].push({
-                event
-            })
+            messages[event.source.userId].push(event)
         }
     }
     // const profile = await client.getProfile(event.source.userId)
