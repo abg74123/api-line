@@ -85,7 +85,8 @@ app.use(express.json())
 router.post('/webhook', async (req, res) => {
     line.middleware(lineConfig)
     const bodyBuffer = req.body;
-    const bodyJSON = JSON.parse(bodyBuffer.toString());
+    console.log("body => ",bodyBuffer)
+    const bodyJSON = bodyBuffer.toString();
 
     console.log("event =>>>>", bodyJSON)
 
