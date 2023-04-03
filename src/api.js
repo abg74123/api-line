@@ -143,7 +143,7 @@ router.get('/messages/:userId', async (req, res) => {
 
     res.status(200).json({
         status: 200,
-        data: messages,
+        data: messages[userId],
     })
     }else{
         res.status(404).json({
