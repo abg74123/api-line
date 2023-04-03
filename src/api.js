@@ -9,7 +9,9 @@ const handleEvent = async (event) => {
 
     if(event.type === 'message'){
 
-        messages.push(event)
+        messages[event.source.userId].push({
+            event
+        })
     }
     // const profile = await client.getProfile(event.source.userId)
     // console.log("getProfile =>> ", profile)
@@ -48,7 +50,7 @@ const handleEvent = async (event) => {
 const ACCESS_TOKEN = "i1pQkBiSb1u7xOjTy43W29S3GDfYCSxy76mY38kMZY2KsuxgeUXDvhjQLlSMMXKPcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc61LVu0xU7V3r/q2O6uYFvBDwQv18SwaGVLPlSXCRuZn4AdB04t89/1O/w1cDnyilFU="
 const SECRET_TOKEN = "5df738274847d01d22354ee989df341b"
 
-const messages = []
+const messages = {}
 
 const lineConfig = {
     channelAccessToken: ACCESS_TOKEN,
@@ -89,9 +91,38 @@ router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
     }
 })
 
-router.get('/messages', async (req, res) => {
+router.get('/list/users', async (req, res) => {
 
     const queryString = req.apiGateway?.event.queryStringParameters
+    const users = []
+    if(queryString && queryString['channelAccessToken']){
+
+        for (const [key, value] of Object.entries(messages)){
+            const client = new line.Client({
+                channelAccessToken: queryString['channelAccessToken']
+            });
+            const profile = await client.getProfile(key)
+            console.log("getProfile =>> ", profile)
+            users.push(profile)
+        }
+
+        res.status(200).json({
+            status: 200,
+            data: users,
+        })
+    }else{
+        res.status(404).json({
+            status: 404,
+            messages:'params channelAccessToken'
+        })
+    }
+
+})
+
+router.get('/messages/:userId', async (req, res) => {
+
+    const queryString = req.apiGateway?.event.queryStringParameters
+    const userId = req.params['userId']
     console.log({queryString})
 
     if(queryString && queryString['channelAccessToken']){
@@ -101,7 +132,7 @@ router.get('/messages', async (req, res) => {
         channelAccessToken: queryString['channelAccessToken']
     });
 
-    for (const message of messages){
+    for (const message of messages[userId]){
         const profile = await client.getProfile(message.source.userId)
         console.log("getProfile =>> ", profile)
         message['profile'] = profile
