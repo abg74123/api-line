@@ -21,7 +21,7 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-// app.use(express.json())
+app.use(express.json())
 
 const messages = {}
 
@@ -69,23 +69,27 @@ const handleEvent = async (event) => {
     // ])
 }
 
-const ACCESS_TOKEN = "xGCCFP74flkBjADem0hz6VoxoY/4bSGIlFfI9jzctGsVDMr8Fn1izevDyHT6pkTYEjPb/nR2ZpY8SgSTLx4HkjMJLHq+QWd0Ri6Ub+ry30yjTdw6jwYZ0Nv50vEQAijMpZJBAjzmQCQnw5cEiQR1jQdB04t89/1O/w1cDnyilFU="
-const SECRET_TOKEN = "af2c5ca0ebe6f2d141dd5587ffb92981"
+// const ACCESS_TOKEN = "v565wMs7RUOFeli0wfo0JP1c41EIOPL/Fux3V1GS7goKMmw/hlqyO5W+nxAyIBy/7fj3FOkxrGnHu2EDFRuojWRoa3Mpy/bQM1/NHx4Rb7KiJoVIKv7VxQZpxxK4R6jDGcrfcLU7MToXoCaxI5t9lgdB04t89/1O/w1cDnyilFU="
+// const SECRET_TOKEN = "644edb2fc25ff6c9b5b728a2ef76cbd4"
 
-const lineConfig = {
-    channelAccessToken: ACCESS_TOKEN,
-    channelSecret: SECRET_TOKEN
-}
+//
+// const lineConfig = {
+//     channelAccessToken: ACCESS_TOKEN,
+//     channelSecret: SECRET_TOKEN
+// }
+
 
 // const client = new line.Client({
 //     channelAccessToken: ACCESS_TOKEN
 // });
 
 
-router.post('/webhook',line.middleware(lineConfig),async (req, res) => {
+router.post('/webhook',async (req, res) => {
+    // line.middleware(lineConfig)
+    const events = req.body.events;
+    console.log("event =>>>>", events)
+
     try {
-        const events = req.body.events;
-        console.log("event =>>>>", events)
         return events && events.length > 0 ? await events.map(item => handleEvent(item)) : res.status(200).send("OK")
     } catch (err) {
         res.status(500).end()
