@@ -84,8 +84,8 @@ const lineConfig = {
 // });
 
 
-router.post('/webhook', async (req, res) => {
-    line.middleware(lineConfig)
+router.post('/webhook',  line.middleware(lineConfig),async (req, res) => {
+
     const events = req.body.events;
     console.log("event =>>>>", events)
 
