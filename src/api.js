@@ -14,6 +14,7 @@ const handleEvent = async (event) => {
             messages[event.source.userId].push(event)
         }
     }
+    console.log('push messages => ',messages)
     // const profile = await client.getProfile(event.source.userId)
     // console.log("getProfile =>> ", profile)
     // return client.replyMessage(event.replyToken, [{
@@ -83,7 +84,7 @@ app.use(function (req, res, next) {
 });
 app.use(express.json())
 router.post('/webhook', async (req, res) => {
-    line.middleware(lineConfig)
+    // line.middleware(lineConfig)
     const events = req.body.events;
     console.log("event =>>>>", events)
 
@@ -99,11 +100,12 @@ router.get('/list/users', async (req, res) => {
     const queryString = req.apiGateway?.event.queryStringParameters
     const users = []
     if(queryString && queryString['channelAccessToken']){
-
+        console.log('channelAccessToken => ',queryString['channelAccessToken'])
         for (const [key, value] of Object.entries(messages)){
             const client = new line.Client({
                 channelAccessToken: queryString['channelAccessToken']
             });
+            console.log({client})
             const profile = await client.getProfile(key)
             console.log("getProfile =>> ", profile)
             users.push(profile)
