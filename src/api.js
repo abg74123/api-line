@@ -83,7 +83,7 @@ app.use(function (req, res, next) {
 });
 app.use(express.json())
 router.post('/webhook', async (req, res) => {
-    // line.middleware(lineConfig)
+    line.middleware(lineConfig)
     const events = req.body.events;
     console.log("event =>>>>", events)
 
