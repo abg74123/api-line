@@ -1,7 +1,6 @@
 const line = require('@line/bot-sdk')
 const cors = require('cors');
 const express = require('express')
-const bodyParser = require('body-parser')
 const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
@@ -82,12 +81,13 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-app.use(bodyParser.json())
+app.use(express.json())
 router.post('/webhook', async (req, res) => {
     line.middleware(lineConfig)
+    const bodyBuffer = req.body;
+    const bodyJSON = JSON.parse(bodyBuffer.toString());
 
-    const events = req.body
-    console.log("event =>>>>", events)
+    console.log("event =>>>>", bodyJSON)
 
     try {
         return events && events.length > 0 ? await events.map(item => handleEvent(item)) : res.status(200).send("OK")
