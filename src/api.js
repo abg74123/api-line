@@ -84,9 +84,10 @@ app.use(function (req, res, next) {
 
 router.post('/webhook', async (req, res) => {
     line.middleware(lineConfig)
+    const events = req.body.json()
+    console.log("event =>>>>", events)
+
     try {
-        const events = req.body.json()
-        console.log("event =>>>>", events)
         return events && events.length > 0 ? await events.map(item => handleEvent(item)) : res.status(200).send("OK")
     } catch (err) {
         res.status(500).end()
