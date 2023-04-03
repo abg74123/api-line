@@ -92,7 +92,7 @@ router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
 })
 
 router.get('/list/users', async (req, res) => {
-
+    console.log({messages})
     const queryString = req.apiGateway?.event.queryStringParameters
     const users = []
     if(queryString && queryString['channelAccessToken']){
