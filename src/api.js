@@ -81,7 +81,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
+router.post('/webhook', async (req, res) => {
     try {
         const events = req.body.events
         console.log("event =>>>>", events)
