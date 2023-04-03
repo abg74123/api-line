@@ -92,6 +92,10 @@ router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
 router.get('/messages', async (req, res) => {
 
     const queryString = req.apiGateway?.event.queryStringParameters
+    console.log({queryString})
+
+    if(queryString[channelAccessToken]){
+
 
     const client = new line.Client({
         channelAccessToken: queryString[channelAccessToken]
@@ -107,6 +111,13 @@ router.get('/messages', async (req, res) => {
         status: 200,
         data: messages,
     })
+    }else{
+        res.status(404).json({
+            status: 404,
+            messages:'params channelAccessToken'
+        })
+    }
+
 })
 
 router.post('/broadcast/messages',async (req,res)=>{
