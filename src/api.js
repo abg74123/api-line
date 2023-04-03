@@ -86,7 +86,7 @@ app.use(bodyParser.json())
 router.post('/webhook', async (req, res) => {
     line.middleware(lineConfig)
 
-    const events = req.body.json()
+    const events = req.body
     console.log("event =>>>>", events)
 
     try {
