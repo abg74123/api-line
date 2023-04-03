@@ -72,12 +72,10 @@ const handleEvent = async (event) => {
 const ACCESS_TOKEN = "xGCCFP74flkBjADem0hz6VoxoY/4bSGIlFfI9jzctGsVDMr8Fn1izevDyHT6pkTYEjPb/nR2ZpY8SgSTLx4HkjMJLHq+QWd0Ri6Ub+ry30yjTdw6jwYZ0Nv50vEQAijMpZJBAjzmQCQnw5cEiQR1jQdB04t89/1O/w1cDnyilFU="
 const SECRET_TOKEN = "af2c5ca0ebe6f2d141dd5587ffb92981"
 
-/
 const lineConfig = {
     channelAccessToken: ACCESS_TOKEN,
     channelSecret: SECRET_TOKEN
 }
-
 
 // const client = new line.Client({
 //     channelAccessToken: ACCESS_TOKEN
