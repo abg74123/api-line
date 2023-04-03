@@ -69,14 +69,14 @@ const handleEvent = async (event) => {
     // ])
 }
 
-const ACCESS_TOKEN = "v565wMs7RUOFeli0wfo0JP1c41EIOPL/Fux3V1GS7goKMmw/hlqyO5W+nxAyIBy/7fj3FOkxrGnHu2EDFRuojWRoa3Mpy/bQM1/NHx4Rb7KiJoVIKv7VxQZpxxK4R6jDGcrfcLU7MToXoCaxI5t9lgdB04t89/1O/w1cDnyilFU="
-const SECRET_TOKEN = "644edb2fc25ff6c9b5b728a2ef76cbd4"
+// const ACCESS_TOKEN = "v565wMs7RUOFeli0wfo0JP1c41EIOPL/Fux3V1GS7goKMmw/hlqyO5W+nxAyIBy/7fj3FOkxrGnHu2EDFRuojWRoa3Mpy/bQM1/NHx4Rb7KiJoVIKv7VxQZpxxK4R6jDGcrfcLU7MToXoCaxI5t9lgdB04t89/1O/w1cDnyilFU="
+// const SECRET_TOKEN = "644edb2fc25ff6c9b5b728a2ef76cbd4"
 
-
-const lineConfig = {
-    channelAccessToken: ACCESS_TOKEN,
-    channelSecret: SECRET_TOKEN
-}
+//
+// const lineConfig = {
+//     channelAccessToken: ACCESS_TOKEN,
+//     channelSecret: SECRET_TOKEN
+// }
 
 
 // const client = new line.Client({
@@ -84,8 +84,8 @@ const lineConfig = {
 // });
 
 
-router.post('/webhook',  line.middleware(lineConfig),async (req, res) => {
-
+router.post('/webhook',async (req, res) => {
+    // line.middleware(lineConfig)
     const events = req.body.events;
     console.log("event =>>>>", events)
 
