@@ -72,9 +72,11 @@ router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
 })
 
 router.get('/messages', async (req, res) => {
-    res.status(200).json({
-        data:messages
-    })
+    res.status(200).send(
+        {
+            data:messages
+        }
+    )
 })
 
 router.post('/broadcast/messages',async (req,res)=>{
@@ -90,11 +92,11 @@ router.post('/broadcast/messages',async (req,res)=>{
             type: 'text',
             text: body.message
         })
-        res.status(200).json({
+        res.status(200).send({
             message:"OK"
         })
     }catch (e) {
-         res.status(500).json({
+         res.status(500).send({
             message:e
         })
     }
