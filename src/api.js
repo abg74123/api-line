@@ -103,7 +103,7 @@ router.get('/list/users', async (req, res) => {
     if(queryString && queryString['channelAccessToken']){
         console.log('channelAccessToken => ',queryString['channelAccessToken'])
         const client = new line.Client({
-            channelAccessToken: queryString['channelAccessToken']
+            channelAccessToken: "xGCCFP74flkBjADem0hz6VoxoY/4bSGIlFfI9jzctGsVDMr8Fn1izevDyHT6pkTYEjPb/nR2ZpY8SgSTLx4HkjMJLHq+QWd0Ri6Ub+ry30yjTdw6jwYZ0Nv50vEQAijMpZJBAjzmQCQnw5cEiQR1jQdB04t89/1O/w1cDnyilFU="
         });
         for (const [key, value] of Object.entries(messages)){
             console.log({key})
