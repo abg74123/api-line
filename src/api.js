@@ -97,11 +97,11 @@ router.get('/messages', async (req, res) => {
         channelAccessToken: queryString[channelAccessToken]
     });
 
-    messages.map(async (message) => {
+    for (const message of messages){
         const profile = await client.getProfile(message.source.userId)
         console.log("getProfile =>> ", profile)
         message['profile'] = profile
-    })
+    }
 
     res.status(200).json({
         status: 200,
