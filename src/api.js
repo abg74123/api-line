@@ -9,7 +9,7 @@ const handleEvent = async (event) => {
 
     if(event.type === 'message'){
         if(!messages[event.source.userId]){
-            messages[event.source.userId] = []
+            messages[event.source.userId] = [event]
         }else{
             messages[event.source.userId].push({
                 event
@@ -95,7 +95,7 @@ router.post('/webhook', line.middleware(lineConfig), async (req, res) => {
 })
 
 router.get('/list/users', async (req, res) => {
-    console.log({messages})
+    console.log("messages => ",JSON.stringify(messages))
     const queryString = req.apiGateway?.event.queryStringParameters
     const users = []
     if(queryString && queryString['channelAccessToken']){
@@ -136,7 +136,7 @@ router.get('/messages/:userId', async (req, res) => {
     });
 
     for (const message of messages[userId]){
-        const profile = await client.getProfile(message.source.userId)
+        const profile = await client.getProfile(userId)
         console.log("getProfile =>> ", profile)
         message['profile'] = profile
     }
