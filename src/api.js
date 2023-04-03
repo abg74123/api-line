@@ -83,12 +83,9 @@ app.use(function (req, res, next) {
 });
 app.use(express.json())
 router.post('/webhook', async (req, res) => {
-    line.middleware(lineConfig)
-    const bodyBuffer = req.body;
-    console.log("body => ",bodyBuffer)
-    const bodyJSON = bodyBuffer.toString();
-
-    console.log("event =>>>>", bodyJSON)
+    // line.middleware(lineConfig)
+    const events = req.body.events;
+    console.log("event =>>>>", events)
 
     try {
         return events && events.length > 0 ? await events.map(item => handleEvent(item)) : res.status(200).send("OK")
