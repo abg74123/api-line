@@ -162,6 +162,35 @@ router.get('/messages/:userId', async (req, res) => {
 
 })
 
+router.get('/bot/info', async (req, res) => {
+
+    const queryString = req.apiGateway?.event.queryStringParameters
+    console.log({queryString})
+
+    if(queryString && queryString['channelAccessToken']){
+
+
+        const client = new line.Client({
+            channelAccessToken: queryString['channelAccessToken']
+        });
+
+        const botInfo = await client.getBotInfo()
+        console.log("botInfo =>> ", botInfo)
+
+        res.status(200).json({
+            status: 200,
+            data: botInfo,
+        })
+        console.log("bot info success")
+    }else{
+        res.status(404).json({
+            status: 404,
+            messages:'params channelAccessToken'
+        })
+    }
+
+})
+
 router.post('/broadcast/messages',async (req,res)=>{
     try{
         const body = req.body;
