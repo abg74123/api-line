@@ -26,14 +26,14 @@ const messages = {}
 
 const handleEvent = async (event) => {
 
-    if(event.type === 'message'){
-        if(!messages[event.source.userId]){
+    if (event.type === 'message') {
+        if (!messages[event.source.userId]) {
             messages[event.source.userId] = [event]
-        }else{
+        } else {
             messages[event.source.userId].push(event)
         }
     }
-    console.log('push messages => ',messages)
+    console.log('push messages => ', messages)
     // const profile = await client.getProfile(event.source.userId)
     // console.log("getProfile =>> ", profile)
     // return client.replyMessage(event.replyToken, [{
@@ -83,7 +83,7 @@ const handleEvent = async (event) => {
 // });
 
 
-router.post('/webhook',async (req, res) => {
+router.post('/webhook', async (req, res) => {
     // line.middleware(lineConfig)
     const events = req.body.events;
     console.log("event =>>>>", events)
@@ -96,157 +96,223 @@ router.post('/webhook',async (req, res) => {
 })
 
 router.get('/list/users', async (req, res) => {
-    console.log("messages => ",JSON.stringify(messages))
-    const queryString = req.apiGateway?.event.queryStringParameters
-    const users = []
-    if(queryString && queryString['channelAccessToken']){
-        console.log('channelAccessToken => ',queryString['channelAccessToken'])
-        const client = new line.Client({
-            channelAccessToken: queryString['channelAccessToken']
-        });
-        for (const [key, value] of Object.entries(messages)){
-            console.log({key})
-            console.log({client})
-            try{
-                const profile = await client.getProfile(key)
-                console.log("getProfile =>> ", profile)
-                users.push(profile)
-            }catch (e){
-                console.log("error  profile =>> ", JSON.stringify(e))
+    try {
+        console.log("messages => ", JSON.stringify(messages))
+        const queryString = req.apiGateway?.event.queryStringParameters
+        const users = []
+        const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
+        if (queryString && channelAccessToken) {
+            console.log('channelAccessToken => ', channelAccessToken)
+            const client = new line.Client({
+                channelAccessToken: channelAccessToken
+            });
+            for (const [key, value] of Object.entries(messages)) {
+                console.log({key})
+                console.log({client})
+                try {
+                    const profile = await client.getProfile(key)
+                    console.log("getProfile =>> ", profile)
+                    users.push(profile)
+                } catch (e) {
+                    console.log("error  profile =>> ", JSON.stringify(e))
+                }
+
             }
 
+            res.status(200).json({
+                status: 200,
+                data: users,
+            })
+        } else {
+            res.status(404).json({
+                status: 404,
+                messages: 'params channelAccessToken'
+            })
         }
-
-        res.status(200).json({
-            status: 200,
-            data: users,
-        })
-    }else{
-        res.status(404).json({
-            status: 404,
-            messages:'params channelAccessToken'
+    } catch (e) {
+        res.status(500).json({
+            status: 500,
+            message: e
         })
     }
-
 })
 
 router.get('/messages/:userId', async (req, res) => {
+    try {
+        const queryString = req.apiGateway?.event.queryStringParameters
+        const userId = req.params['userId']
+        console.log({queryString})
+        const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
+        if (queryString && channelAccessToken) {
 
-    const queryString = req.apiGateway?.event.queryStringParameters
-    const userId = req.params['userId']
-    console.log({queryString})
 
-    if(queryString && queryString['channelAccessToken']){
+            const client = new line.Client({
+                channelAccessToken: channelAccessToken
+            });
 
+            for (const message of messages[userId]) {
+                const profile = await client.getProfile(userId)
+                console.log("getProfile =>> ", profile)
+                message['profile'] = profile
+            }
 
-    const client = new line.Client({
-        channelAccessToken: queryString['channelAccessToken']
-    });
-
-    for (const message of messages[userId]){
-        const profile = await client.getProfile(userId)
-        console.log("getProfile =>> ", profile)
-        message['profile'] = profile
-    }
-
-    res.status(200).json({
-        status: 200,
-        data: messages[userId],
-    })
-    }else{
-        res.status(404).json({
-            status: 404,
-            messages:'params channelAccessToken'
+            res.status(200).json({
+                status: 200,
+                data: messages[userId],
+            })
+        } else {
+            res.status(404).json({
+                status: 404,
+                messages: 'params channelAccessToken'
+            })
+        }
+    } catch (e) {
+        res.status(500).json({
+            status: 500,
+            message: e
         })
     }
-
 })
 
 router.get('/bot/info', async (req, res) => {
+    try {
+        const queryString = req.apiGateway?.event.queryStringParameters
+        console.log({queryString})
+        const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
 
-    const queryString = req.apiGateway?.event.queryStringParameters
-    console.log({queryString})
-
-    if(queryString && queryString['channelAccessToken']){
+        if (queryString && channelAccessToken) {
 
 
-        const client = new line.Client({
-            channelAccessToken: queryString['channelAccessToken']
-        });
+            const client = new line.Client({
+                channelAccessToken: channelAccessToken
+            });
 
-        const botInfo = await client.getBotInfo()
-        console.log("botInfo =>> ", botInfo)
+            const botInfo = await client.getBotInfo()
+            console.log("botInfo =>> ", botInfo)
 
-        res.status(200).json({
-            status: 200,
-            data: botInfo,
-        })
-        console.log("bot info success")
-    }else{
-        res.status(404).json({
-            status: 404,
-            messages:'params channelAccessToken'
+            res.status(200).json({
+                status: 200,
+                data: botInfo,
+            })
+            console.log("bot info success")
+        } else {
+            res.status(404).json({
+                status: 404,
+                messages: 'params channelAccessToken'
+            })
+        }
+    } catch (e) {
+        res.status(500).json({
+            status: 500,
+            message: e
         })
     }
-
 })
 
 router.get('/bot/insight/followers', async (req, res) => {
+    try {
 
-    const queryString = req.apiGateway?.event.queryStringParameters
-    console.log({queryString})
+        const queryString = req.apiGateway?.event.queryStringParameters
+        console.log({queryString})
+        const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
 
-    if(queryString && queryString['date'] && queryString['channelAccessToken']){
+        if (queryString && queryString['date'] && channelAccessToken) {
 
 
-        const client = new line.Client({
-            channelAccessToken: queryString['channelAccessToken']
-        });
+            const client = new line.Client({
+                channelAccessToken: channelAccessToken
+            });
 
-        const numberOfFollowers = await client.getNumberOfFollowers(queryString['date'])
-        console.log("numberOfFollowers =>> ", numberOfFollowers)
+            const numberOfFollowers = await client.getNumberOfFollowers(queryString['date'])
+            console.log("numberOfFollowers =>> ", numberOfFollowers)
 
-        res.status(200).json({
-            status: 200,
-            data: numberOfFollowers,
-        })
-        console.log("numberOfFollowers success")
-    }else{
-        res.status(404).json({
-            status: 404,
-            messages:'check params'
+            res.status(200).json({
+                status: 200,
+                data: numberOfFollowers,
+            })
+            console.log("numberOfFollowers success")
+        } else {
+            res.status(404).json({
+                status: 404,
+                messages: 'check params'
+            })
+        }
+    } catch (e) {
+        res.status(500).json({
+            status: 500,
+            message: e
         })
     }
-
 })
 
-router.post('/broadcast/messages',async (req,res)=>{
-    try{
+router.post('/broadcast/messages', async (req, res) => {
+    try {
         const body = req.body;
         console.log({body})
+        const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
 
         const client = new line.Client({
-            channelAccessToken: body.channelAccessToken
+            channelAccessToken
         });
 
         console.log({body})
-      await client.broadcast(  {
+        await client.broadcast({
             type: 'text',
             text: body.message
         })
         res.status(200).json({
             status: 200,
-            message:"OK"
+            message: "OK"
         })
-    }catch (e) {
-         res.status(500).json({
-             status: 500,
-            message:e
+    } catch (e) {
+        res.status(500).json({
+            status: 500,
+            message: e
         })
     }
 })
+
+router.post('/validate/token', async (req, res) => {
+    try {
+        const body = req.body;
+        const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
+
+        if (channelAccessToken) {
+            res.status(200).json({
+                status: 200,
+                messages: 'channelAccessToken is verifire'
+            })
+            console.log("numberOfFollowers success")
+        } else {
+            res.status(404).json({
+                status: 404,
+                messages: 'check params'
+            })
+        }
+    } catch (e) {
+        res.status(500).json({
+            status: 500,
+            message: e
+        })
+    }
+})
+
+const getChannelAccessToken = async (client_id, client_secret) => {
+    try {
+        const oAuth = new line.OAuth()
+        const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
+        console.log("access_token => ", access_token)
+        return access_token
+    } catch (e) {
+        res.status(500).json({
+            status: 500,
+            message: e
+        })
+    }
+}
 
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
 app.use('/.netlify/functions/api', router)
 
 module.exports.handler = serverless(app)
+
