@@ -292,7 +292,7 @@ router.post('/validate/token', async (req, res) => {
     } catch (e) {
         res.status(500).json({
             status: 500,
-            message: e
+            message: 'validate error'
         })
     }
 })
@@ -306,7 +306,7 @@ const getChannelAccessToken = async (client_id, client_secret) => {
     } catch (e) {
         res.status(500).json({
             status: 500,
-            message: 'access_token not found'
+            message: 'access token not found'
         })
     }
 }
