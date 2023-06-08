@@ -306,7 +306,7 @@ const getChannelAccessToken = async (client_id, client_secret) => {
     } catch (e) {
         res.status(500).json({
             status: 500,
-            message: e
+            message: 'access_token not found'
         })
     }
 }
