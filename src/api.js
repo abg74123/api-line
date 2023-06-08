@@ -196,14 +196,14 @@ router.get('/bot/insight/followers', async (req, res) => {
     const queryString = req.apiGateway?.event.queryStringParameters
     console.log({queryString})
 
-    if(queryString && queryString['channelAccessToken']){
+    if(queryString && queryString['date'] && queryString['channelAccessToken']){
 
 
         const client = new line.Client({
             channelAccessToken: queryString['channelAccessToken']
         });
 
-        const numberOfFollowers = await client.getNumberOfFollowers()
+        const numberOfFollowers = await client.getNumberOfFollowers(queryString['date'])
         console.log("numberOfFollowers =>> ", numberOfFollowers)
 
         res.status(200).json({
@@ -214,7 +214,7 @@ router.get('/bot/insight/followers', async (req, res) => {
     }else{
         res.status(404).json({
             status: 404,
-            messages:'params channelAccessToken'
+            messages:'check params'
         })
     }
 
