@@ -278,15 +278,22 @@ router.post('/validate/token', async (req, res) => {
 
         const body = req.body;
         const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
-        
+
+        console.log("access_token +++",body.access_token)
+
+        try{
         const client = new line.Client({
             channelAccessToken:body.access_token
         });
+        
         onsole.log("client => ",client)
+
+        }catch(err){
+            console.log("error Client XXX => ",err);
+        }
         // const client_id = await client.client_id
         // const client_secret = await client.client_secret
 
-        console.log("access_token +++",body.access_token)
         // console.log("clientclientclient => ",{client_id,client_secret})
 
         if (channelAccessToken) {
