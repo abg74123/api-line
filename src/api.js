@@ -300,9 +300,8 @@ router.post('/validate/token', async (req, res) => {
 const getChannelAccessToken = async (client_id, client_secret) => {
     try {
         const oAuth = new line.OAuth()
-        const {access_token,expires_in} = await oAuth.issueAccessToken(client_id, client_secret)
+        const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
         console.log("access_token => ", access_token)
-        console.log("expires_in => ", expires_in)
         return access_token
     } catch (e) {
         res.status(500).json({
