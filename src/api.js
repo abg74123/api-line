@@ -276,28 +276,7 @@ router.post('/validate/token', async (req, res) => {
     try {
         const body = req.body;
         const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
-        try{
-            const oAuth = new line.OAuth()
-            const verifyAccessToken1 = await oAuth.verifyAccessToken(channelAccessToken)
-            const verifyAccessToken2 = await oAuth.verifyAccessToken(body.access_token)
 
-            console.log("channelAccessToken => ",channelAccessToken);
-            console.log("body.access_token => ",body.access_token);
-
-            console.log("ver channelAccessToken => ",verifyAccessToken1);
-            console.log("ver access_token => ",verifyAccessToken2);
-
-            const client = new line.Client({
-                channelAccessToken:body.access_token
-            });
-            // const profile = await client.getProfile
-            // console.log("client.getProfile => ",profile);
-            console.log("clientclient => ",client);
-        }catch(err){
-
-        }
-      
-        
         if (channelAccessToken) {
             res.status(200).json({
                 status: 200,
@@ -321,8 +300,9 @@ router.post('/validate/token', async (req, res) => {
 const getChannelAccessToken = async (client_id, client_secret) => {
     try {
         const oAuth = new line.OAuth()
-        const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
+        const {access_token,expires_in} = await oAuth.issueAccessToken(client_id, client_secret)
         console.log("access_token => ", access_token)
+        console.log("expires_in => ", expires_in)
         return access_token
     } catch (e) {
         res.status(500).json({
