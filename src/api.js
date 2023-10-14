@@ -274,16 +274,20 @@ router.post('/broadcast/messages', async (req, res) => {
 
 router.post('/validate/token', async (req, res) => {
     try {
+        console.log("validate +++")
+
         const body = req.body;
         const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
         
         const client = new line.Client({
             channelAccessToken:body.access_token
         });
-
+        onsole.log("client => ",client)
         const client_id = await client.client_id
         const client_secret = await client.client_secret
 
+        c
+        console.log("access_token +++",body.access_token)
         console.log("clientclientclient => ",{client_id,client_secret})
 
         if (channelAccessToken) {
