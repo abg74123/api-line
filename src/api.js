@@ -274,30 +274,27 @@ router.post('/broadcast/messages', async (req, res) => {
 
 router.post('/validate/token', async (req, res) => {
     try {
-        console.log("validate +++")
-
         const body = req.body;
-        const channelAccessToken = body.access_token
-
-        console.log("access_token +++",body.access_token)
-
+        const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
         try{
+            const oAuth = new line.OAuth()
+            
+            console.log("channelAccessToken => ",channelAccessToken);
+            console.log("body.access_token => ",body.access_token);
 
-        const client = new line.Client({
-            channelAccessToken
-        });
-      
+            console.log("ver channelAccessToken",oAuth.verifyAccessToken(channelAccessToken));
+            console.log("ver access_token",oAuth.verifyAccessToken(body.access_token));
 
-        onsole.log("client => ",client)
+            const client = new line.Client({
+                channelAccessToken:body.access_token
+            });
 
+            console.log("clientclient => ",client);
         }catch(err){
-            console.log("error Client XXX => ",err);
+
         }
-        // const client_id = await client.client_id
-        // const client_secret = await client.client_secret
-
-        // console.log("clientclientclient => ",{client_id,client_secret})
-
+      
+        
         if (channelAccessToken) {
             res.status(200).json({
                 status: 200,
@@ -321,7 +318,6 @@ router.post('/validate/token', async (req, res) => {
 const getChannelAccessToken = async (client_id, client_secret) => {
     try {
         const oAuth = new line.OAuth()
-        await oAuth.ac
         const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
         console.log("access_token => ", access_token)
         return access_token
