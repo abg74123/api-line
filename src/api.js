@@ -289,7 +289,7 @@ router.post('/validate/token', async (req, res) => {
                 channelAccessToken:body.access_token
             });
 
-            console.log("client.getProfile => ",client.getProfile);
+            console.log("client.getProfile => ",await client.getProfile);
             console.log({client});
             console.log("clientclient => ",client);
         }catch(err){
