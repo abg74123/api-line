@@ -286,7 +286,6 @@ router.post('/validate/token', async (req, res) => {
         const client_id = await client.client_id
         const client_secret = await client.client_secret
 
-        c
         console.log("access_token +++",body.access_token)
         console.log("clientclientclient => ",{client_id,client_secret})
 
