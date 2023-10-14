@@ -277,15 +277,17 @@ router.post('/validate/token', async (req, res) => {
         console.log("validate +++")
 
         const body = req.body;
-        const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
+        const channelAccessToken = body.access_token
 
         console.log("access_token +++",body.access_token)
 
         try{
+
         const client = new line.Client({
-            channelAccessToken:body.access_token
+            channelAccessToken
         });
-        
+      
+
         onsole.log("client => ",client)
 
         }catch(err){
