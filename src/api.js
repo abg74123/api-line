@@ -111,8 +111,8 @@ router.get('/list/users', async (req, res) => {
                 channelAccessToken: channelAccessToken
             });
             for (const [key, value] of Object.entries(messages)) {
-                console.log({key})
-                console.log({client})
+                console.log({ key })
+                console.log({ client })
                 try {
                     const profile = await client.getProfile(key)
                     console.log("getProfile =>> ", profile)
@@ -145,7 +145,7 @@ router.get('/messages/:userId', async (req, res) => {
     try {
         const queryString = req.apiGateway?.event.queryStringParameters
         const userId = req.params['userId']
-        console.log({queryString})
+        console.log({ queryString })
         const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
         if (queryString && channelAccessToken) {
 
@@ -181,7 +181,7 @@ router.get('/messages/:userId', async (req, res) => {
 router.get('/bot/info', async (req, res) => {
     try {
         const queryString = req.apiGateway?.event.queryStringParameters
-        console.log({queryString})
+        console.log({ queryString })
         const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
 
         if (queryString && channelAccessToken) {
@@ -217,7 +217,7 @@ router.get('/bot/insight/followers', async (req, res) => {
     try {
 
         const queryString = req.apiGateway?.event.queryStringParameters
-        console.log({queryString})
+        console.log({ queryString })
         const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
 
         if (queryString && queryString['date'] && channelAccessToken) {
@@ -252,14 +252,14 @@ router.get('/bot/insight/followers', async (req, res) => {
 router.post('/broadcast/messages', async (req, res) => {
     try {
         const body = req.body;
-        console.log({body})
+        console.log({ body })
         const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
 
         const client = new line.Client({
             channelAccessToken
         });
 
-        console.log({body})
+        console.log({ body })
         await client.broadcast({
             type: 'text',
             text: body.message
@@ -280,7 +280,7 @@ router.post('/validate/token', async (req, res) => {
     try {
         const body = req.body;
         const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
-        console.log("validate [channelAccessToken]=> ",channelAccessToken)
+        console.log("validate [channelAccessToken]=> ", channelAccessToken)
         if (channelAccessToken) {
             res.status(200).json({
                 status: 200,
@@ -306,14 +306,21 @@ const getChannelAccessToken = async (client_id, client_secret) => {
     try {
         console.log("--- FUNC | getChannelAccessToken---")
         // const oAuth = new line.OAuth()
-        const queryParams = `grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}`
-        const {access_token ,expires_in} = await axios.post(`${lineDomain}/token?${queryParams}`)
+        const { access_token, expires_in } = await axios.post(`${lineDomain}/token`, {
+            client_id,
+            client_secret,
+            grant_type: 'client_credentials'
+        }, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
         // const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
         console.log("access_token => ", access_token)
         console.log("expires_in => ", expires_in)
         return access_token
     } catch (e) {
-        console.log("error => ",e)
+        console.log("error => ", e)
         res.status(500).json({
             status: 500,
             message: 'access token not found'
