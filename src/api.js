@@ -3,7 +3,7 @@ const express = require('express')
 const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
-const axios = require('axios')
+const {axios} = require('axios')
 
 const lineDomain = "https://api.line.me/oauth2/v3"
 
@@ -306,15 +306,20 @@ const getChannelAccessToken = async (client_id, client_secret) => {
     try {
         console.log("--- FUNC | getChannelAccessToken---")
         // const oAuth = new line.OAuth()
-        const { access_token, expires_in } = await axios.post(`${lineDomain}/token`, {
-            client_id,
-            client_secret,
-            grant_type: 'client_credentials'
-        }, {
-            headers: {
+        const axiosParam = axios({
+            method: 'post',
+            url: `${lineDomain}/token`,
+            data: {
+                client_id,
+                client_secret,
+                grant_type: 'client_credentials'
+            },
+            headers:{
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
-        })
+          });
+
+        const { access_token, expires_in } = await axiosParam
         // const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
         console.log("access_token => ", access_token)
         console.log("expires_in => ", expires_in)
