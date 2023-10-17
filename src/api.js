@@ -313,7 +313,7 @@ const getChannelAccessToken = async (client_id, client_secret) => {
         console.log("expires_in => ", expires_in)
         return access_token
     } catch (e) {
-        console.log("access token not found")
+        console.log("error => ",e)
         res.status(500).json({
             status: 500,
             message: 'access token not found'
