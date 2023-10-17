@@ -306,7 +306,7 @@ const getChannelAccessToken = async (client_id, client_secret) => {
     try {
         console.log("--- FUNC | getChannelAccessToken---")
         // const oAuth = new line.OAuth()
-        const { access_token, expires_in } = await axios.post(`${lineDomain}/token`, {
+        const respData = await axios.post(`${lineDomain}/token`, {
             client_id,
             client_secret,
             grant_type: 'client_credentials'
@@ -316,8 +316,8 @@ const getChannelAccessToken = async (client_id, client_secret) => {
             }
         })
         // const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
-        console.log("access_token => ", access_token)
-        console.log("expires_in => ", expires_in)
+        console.log("respData => ", respData)
+        // console.log("expires_in => ", expires_in)
         return access_token
     } catch (e) {
         console.log("error => ", e)
