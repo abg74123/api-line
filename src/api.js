@@ -276,7 +276,7 @@ router.post('/validate/token', async (req, res) => {
     try {
         const body = req.body;
         const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
-
+        console.log("validate [channelAccessToken]=> ",channelAccessToken)
         if (channelAccessToken) {
             res.status(200).json({
                 status: 200,
