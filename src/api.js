@@ -284,9 +284,10 @@ router.post('/validate/token', async (req, res) => {
             })
             console.log("numberOfFollowers success")
         } else {
-            res.status(404).json({
-                status: 404,
-                messages: 'check params'
+            res.status(400).json({
+                error: "Invalid data",
+                status: 400,
+                messages: "Invalid data"
             })
         }
     } catch (e) {
