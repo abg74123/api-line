@@ -3,6 +3,10 @@ const express = require('express')
 const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
+const axios = require('axios')
+
+const lineDomain = "https://api.line.me/oauth2/v3"
+
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -300,9 +304,12 @@ router.post('/validate/token', async (req, res) => {
 
 const getChannelAccessToken = async (client_id, client_secret) => {
     try {
-        const oAuth = new line.OAuth()
-        const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
+        // const oAuth = new line.OAuth()
+        const queryParams = `grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}`
+        const {access_token ,expires_in} = await axios.post(`${lineDomain}/token?${queryParams}`)
+        // const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
         console.log("access_token => ", access_token)
+        console.log("expires_in => ", expires_in)
         return access_token
     } catch (e) {
         res.status(500).json({
