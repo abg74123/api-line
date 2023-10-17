@@ -304,6 +304,7 @@ router.post('/validate/token', async (req, res) => {
 
 const getChannelAccessToken = async (client_id, client_secret) => {
     try {
+        console.log("--- FUNC | getChannelAccessToken---")
         // const oAuth = new line.OAuth()
         const queryParams = `grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}`
         const {access_token ,expires_in} = await axios.post(`${lineDomain}/token?${queryParams}`)
@@ -312,6 +313,7 @@ const getChannelAccessToken = async (client_id, client_secret) => {
         console.log("expires_in => ", expires_in)
         return access_token
     } catch (e) {
+        console.log("access token not found")
         res.status(500).json({
             status: 500,
             message: 'access token not found'
