@@ -3,7 +3,7 @@ const express = require('express')
 const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
-const {axios} = require('axios')
+const axios = require('axios')
 
 const lineDomain = "https://api.line.me/oauth2/v3"
 
