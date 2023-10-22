@@ -329,6 +329,10 @@ const getChannelAccessToken = async (client_id, client_secret) => {
         client_id,
         client_secret,
         grant_type: 'client_credentials'
+    }, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
     })
     // const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
     console.log("access_token => ", access_token)
