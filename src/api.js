@@ -301,6 +301,7 @@ router.post('/validate/token', async (req, res) => {
             })
         }
     } catch (e) {
+        console.log("error => ",e)
         res.status(500).json({
             status: 500,
             message: 'validate error'
