@@ -284,18 +284,14 @@ router.post('/validate/token', async (req, res) => {
     if (client_id && client_secret && access_token) {
         console.log("access_tokenssss => ",access_token)
         try {
-            const channelAccessToken = await getChannelAccessToken(client_id, client_secret)
-            const respVerifyAccessToken = await verifyAccessToken(access_token)
+            await getChannelAccessToken(client_id, client_secret)
+            await verifyAccessToken(access_token)
 
-            console.log("validate [channelAccessToken]=> ", channelAccessToken)
-            console.log("validate [respVerifyAccessToken]=> ", respVerifyAccessToken)
-            if (channelAccessToken) {
-                res.status(200).json({
-                    status: 200,
-                    messages: 'channelAccessToken is verifire'
-                })
-                console.log("numberOfFollowers success")
-            }
+            console.log("channelAccessToken is verifire")
+            res.status(200).json({
+                status: 200,
+                messages: 'channelAccessToken is verifire'
+            })
         } catch (e) {
             console.log("error => ", e)
             res.status(500).json({
@@ -318,11 +314,7 @@ const verifyAccessToken = async (access_token) => {
     const client = new Client({
         channelAccessToken: access_token
     });
-    console.log("client => ", client)
-
-    const botInfo = await client.getBotInfo()
-    console.log("botInfo => ", botInfo)
-    return botInfo
+    return client
 }
 
 const getChannelAccessToken = async (client_id, client_secret) => {
