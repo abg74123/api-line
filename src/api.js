@@ -279,6 +279,9 @@ router.post('/broadcast/messages', async (req, res) => {
 router.post('/validate/token', async (req, res) => {
     try {
         const body = req.body;
+
+        consolr.log({body})
+        
         const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
         const oAuth = new line.OAuth()
 
