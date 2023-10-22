@@ -284,10 +284,10 @@ router.post('/validate/token', async (req, res) => {
         console.log("access_tokenssss => ",access_token)
         try {
             const channelAccessToken = await getChannelAccessToken(client_id, client_secret)
-            const verifyAccessToken = await verifyAccessToken(access_token)
+            const respVerifyAccessToken = await verifyAccessToken(access_token)
 
             console.log("validate [channelAccessToken]=> ", channelAccessToken)
-            console.log("validate [verifyAccessToken]=> ", verifyAccessToken)
+            console.log("validate [respVerifyAccessToken]=> ", respVerifyAccessToken)
             if (channelAccessToken) {
                 res.status(200).json({
                     status: 200,
