@@ -5,7 +5,7 @@ const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
 
-const lineDomain = "https://api.line.me/oauth2/v2"
+const lineDomain = "https://api.line.me/oauth2/v2.1"
 
 app.use(function (req, res, next) {
 
