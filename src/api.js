@@ -280,6 +280,7 @@ router.post('/validate/token', async (req, res) => {
     const { client_id, client_secret, access_token } = req.body;
 
     if (client_id && client_secret && access_token) {
+        console.log("access_tokenssss => ",access_token)
         try {
             const oAuth = new line.OAuth()
             const channelAccessToken = await getChannelAccessToken(client_id, client_secret)
