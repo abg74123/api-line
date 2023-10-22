@@ -315,11 +315,7 @@ router.post('/validate/token', async (req, res) => {
 
 const verifyAccessToken = async (token) => {
     console.log("--- FUNC | verifyAccessToken---")
-    const { data: { access_token, expires_in } } = await axios.post(`${lineDomain}/verify`, {access_token:token},{
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-    })
+    const { data: { access_token, expires_in } } = await axios.get(`${lineDomain}/verify`, {access_token:token})
 
     console.log("access_token => ", access_token)
     console.log("expires_in => ", expires_in)
