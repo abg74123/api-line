@@ -1,4 +1,5 @@
 const line = require('@line/bot-sdk')
+const Client = require('@line/bot-sdk')
 const axios = require('axios/dist/node/axios.cjs')
 const express = require('express')
 const serverless = require("serverless-http")
@@ -6,7 +7,6 @@ const app = new express()
 const router = express.Router()
 
 const lineDomain = "https://api.line.me/oauth2/v3"
-const lineDomain2 = "https://api.line.me/oauth2/v2.1"
 
 app.use(function (req, res, next) {
 
@@ -318,6 +318,7 @@ const verifyAccessToken = async (access_token) => {
     const client = new Client({
         channelAccessToken: access_token
     });
+    console.log("client => ", client)
 
     const botInfo = await client.getBotInfo()
     console.log("botInfo => ", botInfo)
