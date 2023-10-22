@@ -277,48 +277,57 @@ router.post('/broadcast/messages', async (req, res) => {
 })
 
 router.post('/validate/token', async (req, res) => {
-    try {
-        const body = req.body;
+    const { client_id, client_secret, access_token } = req.body;
 
-        const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
-        const oAuth = new line.OAuth()
+    if (client_id && client_secret && access_token) {
+        try {
+            const oAuth = new line.OAuth()
+            const channelAccessToken = await getChannelAccessToken(client_id, client_secret)
+            const verifyAccessToken = await oAuth.verifyAccessToken(access_token)
 
-        const verifyAccessToken = await oAuth.verifyAccessToken(body.access_token)
-        console.log("verifyAccessToken++ => ",verifyAccessToken)
-
-        console.log("validate [channelAccessToken]=> ", channelAccessToken)
-        if (channelAccessToken) {
-            res.status(200).json({
-                status: 200,
-                messages: 'channelAccessToken is verifire'
+            console.log("validate [channelAccessToken]=> ", channelAccessToken)
+            console.log("validate [verifyAccessToken]=> ", verifyAccessToken)
+            if (channelAccessToken) {
+                res.status(200).json({
+                    status: 200,
+                    messages: 'channelAccessToken is verifire'
+                })
+                console.log("numberOfFollowers success")
+            }
+        } catch (e) {
+            console.log("error => ", e)
+            res.status(500).json({
+                status: 500,
+                message: 'validate error'
             })
-            console.log("numberOfFollowers success")
-        } 
-    } catch (e) {
-        console.log("error => ",e)
-        res.status(500).json({
-            status: 500,
-            message: 'validate error'
-        })
+        }
+    }else {
+        console.warn('XXX params not complete!! XXX');
+        res.status(400).json({
+            status: 400,
+            statusText: "BAD REQUEST",
+            message: "",
+        });
     }
+
 })
 
 const getChannelAccessToken = async (client_id, client_secret) => {
-        console.log("--- FUNC | getChannelAccessToken---")
-        // const oAuth = new line.OAuth()
-        const {data:{access_token, expires_in}} = await axios.post(`${lineDomain}/token`, {
-            client_id,
-            client_secret,
-            grant_type: 'client_credentials'
-        }, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-        // const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
-        console.log("access_token => ", access_token)
-        console.log("expires_in => ", expires_in)
-        return access_token
+    console.log("--- FUNC | getChannelAccessToken---")
+    // const oAuth = new line.OAuth()
+    const { data: { access_token, expires_in } } = await axios.post(`${lineDomain}/token`, {
+        client_id,
+        client_secret,
+        grant_type: 'client_credentials'
+    }, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    // const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
+    console.log("access_token => ", access_token)
+    console.log("expires_in => ", expires_in)
+    return access_token
 }
 
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
