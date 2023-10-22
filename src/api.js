@@ -277,6 +277,7 @@ router.post('/broadcast/messages', async (req, res) => {
 })
 
 router.post('/validate/token', async (req, res) => {
+    console.log("req.body => ",req.body)
     const { client_id, client_secret, access_token } = req.body;
 
     if (client_id && client_secret && access_token) {
