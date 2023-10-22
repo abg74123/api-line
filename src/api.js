@@ -5,7 +5,8 @@ const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
 
-const lineDomain = "https://api.line.me/oauth2/v2.1"
+const lineDomain = "https://api.line.me/oauth2/v3"
+const lineDomain2 = "https://api.line.me/oauth2/v2.1"
 
 app.use(function (req, res, next) {
 
@@ -315,7 +316,7 @@ router.post('/validate/token', async (req, res) => {
 
 const verifyAccessToken = async (token) => {
     console.log("--- FUNC | verifyAccessToken---")
-    const { data: { access_token, expires_in } } = await axios.get(`${lineDomain}/verify`,{access_token:token})
+    const { data: { access_token, expires_in } } = await axios.get(`${lineDomain2}/verify`,{access_token:token})
 
     console.log("access_token => ", access_token)
     console.log("expires_in => ", expires_in)
