@@ -280,8 +280,8 @@ router.post('/validate/token', async (req, res) => {
     try {
         const body = req.body;
 
-        consolr.log({body})
-        
+        consolr.log("body => ",body)
+
         const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
         const oAuth = new line.OAuth()
 
@@ -311,7 +311,6 @@ router.post('/validate/token', async (req, res) => {
 })
 
 const getChannelAccessToken = async (client_id, client_secret) => {
-    try {
         console.log("--- FUNC | getChannelAccessToken---")
         // const oAuth = new line.OAuth()
         const {data:{access_token, expires_in}} = await axios.post(`${lineDomain}/token`, {
@@ -327,13 +326,6 @@ const getChannelAccessToken = async (client_id, client_secret) => {
         console.log("access_token => ", access_token)
         console.log("expires_in => ", expires_in)
         return access_token
-    } catch (e) {
-        console.log("error => ", e)
-        res.status(500).json({
-            status: 500,
-            message: 'access token not found'
-        })
-    }
 }
 
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
