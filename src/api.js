@@ -293,13 +293,7 @@ router.post('/validate/token', async (req, res) => {
                 messages: 'channelAccessToken is verifire'
             })
             console.log("numberOfFollowers success")
-        } else {
-            res.status(400).json({
-                error: "Invalid data",
-                status: 400,
-                messages: "Invalid data"
-            })
-        }
+        } 
     } catch (e) {
         console.log("error => ",e)
         res.status(500).json({
