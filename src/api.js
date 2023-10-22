@@ -283,11 +283,9 @@ router.post('/validate/token', async (req, res) => {
     if (client_id && client_secret && access_token) {
         console.log("access_tokenssss => ",access_token)
         try {
-            const oAuth = new line.OAuth()
             const channelAccessToken = await getChannelAccessToken(client_id, client_secret)
-            const verifyAccessToken = await oAuth.verifyAccessToken(channelAccessToken)
+            const verifyAccessToken = await verifyAccessToken(access_token)
 
-            line.verifyAccessToken()
             console.log("validate [channelAccessToken]=> ", channelAccessToken)
             console.log("validate [verifyAccessToken]=> ", verifyAccessToken)
             if (channelAccessToken) {
@@ -315,6 +313,15 @@ router.post('/validate/token', async (req, res) => {
 
 })
 
+const verifyAccessToken = async (access_token) => {
+    console.log("--- FUNC | verifyAccessToken---")
+    const { data: { access_token, expires_in } } = await axios.post(`${lineDomain}/verify`, {access_token})
+
+    console.log("access_token => ", access_token)
+    console.log("expires_in => ", expires_in)
+    return access_token
+}
+
 const getChannelAccessToken = async (client_id, client_secret) => {
     console.log("--- FUNC | getChannelAccessToken---")
     // const oAuth = new line.OAuth()
@@ -322,10 +329,6 @@ const getChannelAccessToken = async (client_id, client_secret) => {
         client_id,
         client_secret,
         grant_type: 'client_credentials'
-    }, {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
     })
     // const {access_token} = await oAuth.issueAccessToken(client_id, client_secret)
     console.log("access_token => ", access_token)
