@@ -314,7 +314,9 @@ const verifyAccessToken = async (access_token) => {
     const client = new Client({
         channelAccessToken: access_token
     });
-    return client
+    const botInfo =  await client.getBotInfo()
+    console.log("botInfo => ",botInfo)
+    return botInfo
 }
 
 const getChannelAccessToken = async (client_id, client_secret) => {
