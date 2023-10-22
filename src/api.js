@@ -313,9 +313,9 @@ router.post('/validate/token', async (req, res) => {
 
 })
 
-const verifyAccessToken = async (access_token) => {
+const verifyAccessToken = async (token) => {
     console.log("--- FUNC | verifyAccessToken---")
-    const { data: { access_token, expires_in } } = await axios.post(`${lineDomain}/verify`, {access_token})
+    const { data: { access_token, expires_in } } = await axios.post(`${lineDomain}/verify`, {token})
 
     console.log("access_token => ", access_token)
     console.log("expires_in => ", expires_in)
