@@ -285,8 +285,9 @@ router.post('/validate/token', async (req, res) => {
         try {
             const oAuth = new line.OAuth()
             const channelAccessToken = await getChannelAccessToken(client_id, client_secret)
-            const verifyAccessToken = await oAuth.verifyAccessToken("iW9vDnFRA89k3zlIM2dv8NL8xrpKIRVBTxf1VsCye0LK8BA4ECtSkJAs9PMvA030csjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc60dsYrJk3YgLShNesOTbehTc7XHczrD+5p2R8eJW3g+agdB04t89/1O/w1cDnyilFU=")
+            const verifyAccessToken = await oAuth.verifyAccessToken(channelAccessToken)
 
+            line.verifyAccessToken()
             console.log("validate [channelAccessToken]=> ", channelAccessToken)
             console.log("validate [verifyAccessToken]=> ", verifyAccessToken)
             if (channelAccessToken) {
