@@ -1,5 +1,5 @@
 const line = require('@line/bot-sdk')
-const Client = require('@line/bot-sdk')
+const {Client} = require('@line/bot-sdk')
 const axios = require('axios/dist/node/axios.cjs')
 const express = require('express')
 const serverless = require("serverless-http")
