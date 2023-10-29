@@ -1,23 +1,19 @@
 const {Client} = require('@line/bot-sdk')
 
-export async function webhook(event){
+export async function webhook(item){
     console.log("---MODEL | START FUNCTION webhook---")
-    console.log("---event---",event)
+    console.log("---item---",item)
 
-    for (let index = 0; index < event.length; index++) {
-        const element = event[index];
-        console.log("---element---",element)
-        if(element.message.type === 'text'){
-            switch (element.message.text) {
+        if(item.message.type === 'text'){
+            switch (item.message.text) {
                 case 'หนี้สินทั้งหมด':
-                    Client.replyMessage(element.replyToken,'จวย')
+                    Client.replyMessage(item.replyToken,'จวย')
                     break;
                 default:
                     break;
             }
     
         }
-    }
 
 
 }
