@@ -31,7 +31,9 @@ app.use(express.json())
 const messages = {}
 
 const handleEvent = async (item) => {
+    console.log("---CTRL | item---",item)
     if (item.type === 'message') {
+    console.log("---type is message---",item)
         await webhook(item)
     }
 }
@@ -40,7 +42,7 @@ const handleEvent = async (item) => {
 router.post('/webhook', async (req, res) => {
     // line.middleware(lineConfig)
     const events = req.body.events;
-    console.log("event =>>>>", events)
+    console.log("---CTRL | events ---", events)
 
     try {
         return events && events.length > 0 ? await events.map(async(item) => await handleEvent(item)) : res.status(200).send("OK")
