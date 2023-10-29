@@ -5,7 +5,7 @@ const express = require('express')
 const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
-const webhook = require('./model/webhook.model')
+const {webhook} = require('./model/webhook.model')
 
 const lineDomain = "https://api.line.me/oauth2/v3"
 
