@@ -10,7 +10,7 @@ export async function webhook(item) {
         if (item.message.type === 'text') {
             switch (item.message.text) {
                 case 'หนี้สินทั้งหมด':
-                    client.replyMessage(item.replyToken, 'จวย')
+                    await client.replyMessage(item.replyToken, 'จวย')
                     break;
                 default:
                     break;
