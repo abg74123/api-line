@@ -45,7 +45,11 @@ router.post('/webhook', async (req, res) => {
     console.log("---CTRL | events ---", events)
 
     try {
-        return events && events.length > 0 ? await events.map(async(item) => await handleEvent(item)) : res.status(200).send("OK")
+        if(events && events.length > 0){
+            for (let index = 0; index < events.length; index++) await handleEvent(array[index])
+        }else{
+            res.status(200).send("OK")
+        }
     } catch (err) {
         res.status(500).end()
     }
