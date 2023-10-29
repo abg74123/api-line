@@ -5,6 +5,7 @@ const express = require('express')
 const serverless = require("serverless-http")
 const app = new express()
 const router = express.Router()
+const webhook = require('./model/webhook.model')
 
 const lineDomain = "https://api.line.me/oauth2/v3"
 
@@ -30,62 +31,10 @@ app.use(express.json())
 const messages = {}
 
 const handleEvent = async (event) => {
-
     if (event.type === 'message') {
-        if (!messages[event.source.userId]) {
-            messages[event.source.userId] = [event]
-        } else {
-            messages[event.source.userId].push(event)
-        }
+        await webhook(event)
     }
-    console.log('push messages => ', messages)
-    // const profile = await client.getProfile(event.source.userId)
-    // console.log("getProfile =>> ", profile)
-    // return client.replyMessage(event.replyToken, [{
-    //     "type": "template",
-    //     "altText": "this is a buttons template",
-    //     "template": {
-    //         "type": "buttons",
-    //         "thumbnailImageUrl": "https://img.salehere.co.th/p/1200x0/2021/12/28/x0tgsx1038bf.jpg",
-    //         "imageAspectRatio": "rectangle",
-    //         "imageSize": "cover",
-    //         "imageBackgroundColor": "#B6AB1E",
-    //         "title": "นกแก้ว",
-    //         "text": "พันธุ์ทาง",
-    //         "actions": [
-    //             {
-    //                 "type": "message",
-    //                 "label": "ซื้อเลย",
-    //                 "text": "ซื้อเลย"
-    //             },
-    //             {
-    //                 "type": "message",
-    //                 "label": "ยังไม่สนใจ",
-    //                 "text": "ยังไม่สนใจ"
-    //             }
-    //         ]
-    //     }
-    // },
-    //     {
-    //         type: 'text',
-    //         text: `ไง ${profile.displayName}`
-    //     }
-    // ])
 }
-
-// const ACCESS_TOKEN = "v565wMs7RUOFeli0wfo0JP1c41EIOPL/Fux3V1GS7goKMmw/hlqyO5W+nxAyIBy/7fj3FOkxrGnHu2EDFRuojWRoa3Mpy/bQM1/NHx4Rb7KiJoVIKv7VxQZpxxK4R6jDGcrfcLU7MToXoCaxI5t9lgdB04t89/1O/w1cDnyilFU="
-// const SECRET_TOKEN = "644edb2fc25ff6c9b5b728a2ef76cbd4"
-
-//
-// const lineConfig = {
-//     channelAccessToken: ACCESS_TOKEN,
-//     channelSecret: SECRET_TOKEN
-// }
-
-
-// const client = new line.Client({
-//     channelAccessToken: ACCESS_TOKEN
-// });
 
 
 router.post('/webhook', async (req, res) => {
