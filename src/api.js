@@ -30,9 +30,9 @@ app.use(express.json())
 
 const messages = {}
 
-const handleEvent = async (event) => {
-    if (event.type === 'message') {
-        await webhook(event)
+const handleEvent = async (item) => {
+    if (item.type === 'message') {
+        await webhook(item)
     }
 }
 
