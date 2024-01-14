@@ -38,6 +38,25 @@ const handleEvent = async (item) => {
     }
 }
 
+router.post('/callback', async (req, res) => {
+    // line.middleware(lineConfig)
+    console.log("---START CALLBACK FUNC---")
+    const events = req.body.events;
+    console.log("---CTRL | events ---", events)
+
+    try {
+        if(events && events.length > 0){
+            for (let index = 0; index < events.length; index++) {
+                console.log("events => ",events[index])
+            //   return await handleEvent(events[index])
+            }
+        }else{
+            return res.status(200).send("OK")
+        }
+    } catch (err) {
+        res.status(500).end()
+    }
+})
 
 router.post('/webhook', async (req, res) => {
     // line.middleware(lineConfig)
