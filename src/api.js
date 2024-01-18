@@ -59,6 +59,7 @@ router.post('/callback', async (req, res) => {
 })
 
 router.post('/rich/user', async (req, res) => {
+
     try {
         const {richId, userId} = req.body
         await axios.post(`${lineDomain}/${userId}/richmenu/${richId}`, {}, {
