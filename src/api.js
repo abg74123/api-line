@@ -31,9 +31,9 @@ app.use(express.json())
 const messages = {}
 
 const handleEvent = async (item) => {
-    console.log("---CTRL | item---",item)
+    console.log("---CTRL | item---", item)
     if (item.type === 'message') {
-    console.log("---type is message---",item)
+        console.log("---type is message---", item)
         await webhook(item)
     }
 }
@@ -45,16 +45,32 @@ router.post('/callback', async (req, res) => {
     console.log("---CTRL | events ---", events)
 
     try {
-        if(events && events.length > 0){
+        if (events && events.length > 0) {
             for (let index = 0; index < events.length; index++) {
-                console.log("events => ",events[index])
-            //   return await handleEvent(events[index])
+                console.log("events => ", events[index])
+                //   return await handleEvent(events[index])
             }
-        }else{
+        } else {
             return res.status(200).send("OK")
         }
     } catch (err) {
         res.status(500).end()
+    }
+})
+
+router.post('/rich/user', async (req, res) => {
+    try {
+        const {richId, userId} = req.body
+        await axios.post(`${lineDomain}/${userId}/richmenu/${richId}`, {}, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': "Bearer kli5TWfWl9rzwCNy/zjVBTFadcvrVZ1cBIzuGpd7vPwo6U8rhpScH1OEBgXClYZEcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc63sceiRaVEHK+co1R3lWFSdbtLGhE7G3CWWt1YBQvBdKgdB04t89/1O/w1cDnyilFU="
+            }
+        })
+        res.status(200).join({message: 'set rich menu by user success'})
+    } catch (e) {
+        res.status(500).join({message: e})
+
     }
 })
 
@@ -64,11 +80,11 @@ router.post('/webhook', async (req, res) => {
     console.log("---CTRL | events ---", events)
 
     try {
-        if(events && events.length > 0){
+        if (events && events.length > 0) {
             for (let index = 0; index < events.length; index++) {
-              return await handleEvent(events[index])
+                return await handleEvent(events[index])
             }
-        }else{
+        } else {
             return res.status(200).send("OK")
         }
     } catch (err) {
@@ -88,8 +104,8 @@ router.get('/list/users', async (req, res) => {
                 channelAccessToken: channelAccessToken
             });
             for (const [key, value] of Object.entries(messages)) {
-                console.log({ key })
-                console.log({ client })
+                console.log({key})
+                console.log({client})
                 try {
                     const profile = await client.getProfile(key)
                     console.log("getProfile =>> ", profile)
@@ -122,7 +138,7 @@ router.get('/messages/:userId', async (req, res) => {
     try {
         const queryString = req.apiGateway?.event.queryStringParameters
         const userId = req.params['userId']
-        console.log({ queryString })
+        console.log({queryString})
         const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
         if (queryString && channelAccessToken) {
 
@@ -158,7 +174,7 @@ router.get('/messages/:userId', async (req, res) => {
 router.get('/bot/info', async (req, res) => {
     try {
         const queryString = req.apiGateway?.event.queryStringParameters
-        console.log({ queryString })
+        console.log({queryString})
         const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
 
         if (queryString && channelAccessToken) {
@@ -194,7 +210,7 @@ router.get('/bot/insight/followers', async (req, res) => {
     try {
 
         const queryString = req.apiGateway?.event.queryStringParameters
-        console.log({ queryString })
+        console.log({queryString})
         const channelAccessToken = await getChannelAccessToken(queryString['client_id'], queryString['client_secret'])
 
         if (queryString && queryString['date'] && channelAccessToken) {
@@ -229,14 +245,14 @@ router.get('/bot/insight/followers', async (req, res) => {
 router.post('/broadcast/messages', async (req, res) => {
     try {
         const body = req.body;
-        console.log({ body })
+        console.log({body})
         const channelAccessToken = await getChannelAccessToken(body.client_id, body.client_secret)
 
         const client = new line.Client({
             channelAccessToken
         });
 
-        console.log({ body })
+        console.log({body})
         await client.broadcast({
             type: 'text',
             text: body.message
@@ -254,11 +270,11 @@ router.post('/broadcast/messages', async (req, res) => {
 })
 
 router.post('/validate/token', async (req, res) => {
-    console.log("req.body => ",req.body)
-    const { client_id, client_secret, access_token } = req.body;
+    console.log("req.body => ", req.body)
+    const {client_id, client_secret, access_token} = req.body;
 
     if (client_id && client_secret && access_token) {
-        console.log("access_tokenssss => ",access_token)
+        console.log("access_tokenssss => ", access_token)
         try {
             await getChannelAccessToken(client_id, client_secret)
             await verifyAccessToken(access_token)
@@ -275,7 +291,7 @@ router.post('/validate/token', async (req, res) => {
                 message: 'validate error'
             })
         }
-    }else {
+    } else {
         console.warn('XXX params not complete!! XXX');
         res.status(400).json({
             status: 400,
@@ -290,15 +306,15 @@ const verifyAccessToken = async (access_token) => {
     const client = new Client({
         channelAccessToken: access_token
     });
-    const botInfo =  await client.getBotInfo()
-    console.log("botInfo => ",botInfo)
+    const botInfo = await client.getBotInfo()
+    console.log("botInfo => ", botInfo)
     return botInfo
 }
 
 const getChannelAccessToken = async (client_id, client_secret) => {
     console.log("--- FUNC | getChannelAccessToken---")
     // const oAuth = new line.OAuth()
-    const { data: { access_token, expires_in } } = await axios.post(`${lineDomain}/token`, {
+    const {data: {access_token, expires_in}} = await axios.post(`${lineDomain}/token`, {
         client_id,
         client_secret,
         grant_type: 'client_credentials'
