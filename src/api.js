@@ -62,9 +62,12 @@ router.post('/callback', async (req, res) => {
 })
 
 router.post('/rich/user', async (req, res) => {
-
     try {
+        console.log("---START SET RICH BY USER---")
+        console.log("---body---", req.body)
+
         const {richId, userId} = req.body
+
         console.log(`${lineDomain}/bot/user/${userId}/richmenu/${richId}`)
         await axios.post(`${lineDomain}/bot/user/${userId}/richmenu/${richId}`, {}, {
             headers: {
