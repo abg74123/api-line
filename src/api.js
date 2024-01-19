@@ -38,7 +38,7 @@ const handleEvent = async (item) => {
     }
 }
 
-router.get('/check',(req, res) => {
+router.get('/check', (req, res) => {
     res.send('check success')
 })
 router.post('/callback', async (req, res) => {
@@ -72,10 +72,15 @@ router.post('/rich/user', async (req, res) => {
                 'Authorization': "Bearer kli5TWfWl9rzwCNy/zjVBTFadcvrVZ1cBIzuGpd7vPwo6U8rhpScH1OEBgXClYZEcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc63sceiRaVEHK+co1R3lWFSdbtLGhE7G3CWWt1YBQvBdKgdB04t89/1O/w1cDnyilFU="
             }
         })
-        res.status(200).json({message: 'set rich menu by user success'})
+        res.send({
+            statusCode: 200,
+            message: 'set rich menu by user success'
+        })
     } catch (e) {
-        res.status(500).json({message: e})
-
+        res.send({
+            statusCode: 500,
+            message: e
+        })
     }
 })
 
