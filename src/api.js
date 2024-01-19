@@ -331,7 +331,7 @@ const getChannelAccessToken = async (client_id, client_secret) => {
 }
 
 // https://thunderous-dodol-b30b53.netlify.app/.netlify/functions/api
-app.use('/.netlify/dist/api', router)
+app.use('/.netlify/functions/api', router)
 
 module.exports.handler = serverless(app)
 
