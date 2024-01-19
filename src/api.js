@@ -65,6 +65,7 @@ router.post('/rich/user', async (req, res) => {
 
     try {
         const {richId, userId} = req.body
+        console.log(`${lineDomain}/bot/user/${userId}/richmenu/${richId}`)
         await axios.post(`${lineDomain}/bot/user/${userId}/richmenu/${richId}`, {}, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
