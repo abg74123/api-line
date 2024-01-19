@@ -58,22 +58,22 @@ router.post('/callback', async (req, res) => {
     }
 })
 
-router.post('/rich/user', async (req, res) => {
-
-    try {
-        const {richId, userId} = req.body
-        await axios.post(`${lineDomain}/${userId}/richmenu/${richId}`, {}, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': "Bearer kli5TWfWl9rzwCNy/zjVBTFadcvrVZ1cBIzuGpd7vPwo6U8rhpScH1OEBgXClYZEcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc63sceiRaVEHK+co1R3lWFSdbtLGhE7G3CWWt1YBQvBdKgdB04t89/1O/w1cDnyilFU="
-            }
-        })
-        res.status(200).join({message: 'set rich menu by user success'})
-    } catch (e) {
-        res.status(500).join({message: e})
-
-    }
-})
+// router.post('/rich/user', async (req, res) => {
+//
+//     try {
+//         const {richId, userId} = req.body
+//         await axios.post(`${lineDomain}/${userId}/richmenu/${richId}`, {}, {
+//             headers: {
+//                 'Content-Type': 'application/x-www-form-urlencoded',
+//                 'Authorization': "Bearer kli5TWfWl9rzwCNy/zjVBTFadcvrVZ1cBIzuGpd7vPwo6U8rhpScH1OEBgXClYZEcsjUJ82xzJGGQisZ0D2KNMzm5NwTZ0ZdBTb4Bf1uc63sceiRaVEHK+co1R3lWFSdbtLGhE7G3CWWt1YBQvBdKgdB04t89/1O/w1cDnyilFU="
+//             }
+//         })
+//         res.status(200).join({message: 'set rich menu by user success'})
+//     } catch (e) {
+//         res.status(500).join({message: e})
+//
+//     }
+// })
 
 router.post('/webhook', async (req, res) => {
     // line.middleware(lineConfig)
